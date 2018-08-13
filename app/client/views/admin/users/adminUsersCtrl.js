@@ -214,6 +214,15 @@ angular.module('reg')
               },{
                 name: 'Essay',
                 value: user.profile.essay || "N/A"
+              },{
+                name: 'What is your favorite city in the world?',
+                value: user.profile.question1 || "N/A"
+              },{
+                name: "Who's the best school in the universe?",
+                value: user.profile.question2 || "N/A"
+              },{
+                name: 'How are you doing today?',
+                value: user.profile.question3 || "N/A"
               }
             ]
           },{
