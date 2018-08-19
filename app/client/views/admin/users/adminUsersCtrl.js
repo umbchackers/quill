@@ -8,6 +8,9 @@ angular.module('reg')
 
       $scope.pages = [];
       $scope.users = [];
+      $scope.currentPage = 0;
+
+      console.log($stateParams)
 
       $scope.sortType = 'name'; // set the default sort type
       $scope.sortReverse  = false;
@@ -50,6 +53,8 @@ angular.module('reg')
       });
 
       $scope.goToPage = function(page){
+        $scope.currentPage = page;
+
         $state.go('app.admin.users', {
           page: page,
           size: $stateParams.size || 50
@@ -214,6 +219,15 @@ angular.module('reg')
               },{
                 name: 'Essay',
                 value: user.profile.essay || "N/A"
+              },{
+                name: 'What is your favorite city in the world?',
+                value: user.profile.question1 || "N/A"
+              },{
+                name: "Who's the best school in the universe?",
+                value: user.profile.question2 || "N/A"
+              },{
+                name: 'How are you doing today?',
+                value: user.profile.question3 || "N/A"
               }
             ]
           },{

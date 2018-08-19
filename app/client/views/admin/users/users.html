@@ -1,35 +1,6 @@
 <div class="ui segment">
-
   <div class="ui stackable grid">
-    <div class="three wide column">
-      <div class="ui header">
-        Search
-      </div>
-      <div class="ui form">
-        <div class="field">
-          <div class="ui icon fluid input">
-            <input type="text"
-                   placeholder="Search..."
-                   ng-model="queryText"
-                   ng-model-options="{debounce: 300}">
-              <i class="search icon"></i>
-          </div>
-        </div>
-
-      </div>
-
-      <div class="ui divider"></div>
-
-      <button
-        ng-repeat="page in pages"
-        ng-class="page == currentPage ? 'active pink' : ''"
-        ng-click="goToPage(page)"
-        class="ui icon basic page button">
-        {{page}}
-      </button>
-
-    </div>
-    <div id="table-container" class="thirteen wide column">
+    <div id="table-container" class="sixteen column">
       <div class="ui header">
         Users
       </div>
@@ -37,9 +8,48 @@
       <p>
         <b>Key: </b><br/>
         V = Verified, S = Submitted, A = Accepted, C = Confirmed<br/>
-        <i class="add user icon"></i>: Accept User / Allow User to come to HackUMBC<br/>
-        <i class="flag icon"></i>: Check-in the User to HackUMBC
+        <!-- <i class="add user icon"></i>: Accept User / Allow User to come to HackUMBC<br/>
+        <i class="flag icon"></i>: Check-in the User to HackUMBC -->
       </p>
+
+      <div class="ui grid container">
+            <div class="eight wide column" style="padding-left: 0px;">
+               <div class="ui form">
+                  <div class="field">
+                     <div class="ui icon fluid input">
+                        <input type="text"
+                              placeholder="Search..."
+                              ng-model="queryText"
+                              ng-model-options="{debounce: 300}"
+                              style="width: 100%">
+                        <i class="search icon"></i>
+                     </div>
+                  </div>
+               </div>
+            </div>
+      
+            <div class="eight wide column">
+               <div class="ui pagination menu">
+                  <a class="icon item" ng-class="{disabled: currentPage == 0}" ng-click="currentPage == 0 || goToPage(0)">
+                     <i class="angle double left icon"></i>
+                  </a>
+                  <a class="icon item" ng-class="{disabled: currentPage == 0}" ng-click="currentPage == 0 || goToPage(currentPage - 1)">
+                     <i class="angle left icon"></i>
+                  </a>
+
+                  <a class="item" ng-repeat="page in pages" ng-click="goToPage(page)">
+                     {{page}}
+                  </a>
+
+                  <a class="icon item" ng-class="{disabled: currentPage == pages.length - 1}" ng-click="currentPage == pages.length - 1 || goToPage(currentPage - 1)">
+                     <i class="angle right icon"></i>
+                  </a>
+                  <a class="icon item" ng-class="{disabled: currentPage == pages.length - 1}" ng-click="currentPage == pages.length - 1 || goToPage(0)">
+                     <i class="angle double right icon"></i>
+                  </a>
+               </div>
+            </div>
+        </div>
 
       <div class="ui long user modal">
         <i class="close icon"></i>
@@ -53,10 +63,6 @@
         <div class="content">
 
           <div>
-<!--             <P>
-              <button ng-click="goUser($event, selectedUser)">Goto Page</button>
-            </P> -->
-
             <div class="ui header">
               Status:
               <div
