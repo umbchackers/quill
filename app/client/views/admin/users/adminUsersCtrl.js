@@ -8,6 +8,9 @@ angular.module('reg')
 
       $scope.pages = [];
       $scope.users = [];
+      $scope.currentPage = 0;
+
+      console.log($stateParams)
 
       $scope.sortType = 'name'; // set the default sort type
       $scope.sortReverse  = false;
@@ -50,6 +53,8 @@ angular.module('reg')
       });
 
       $scope.goToPage = function(page){
+        $scope.currentPage = page;
+
         $state.go('app.admin.users', {
           page: page,
           size: $stateParams.size || 50
