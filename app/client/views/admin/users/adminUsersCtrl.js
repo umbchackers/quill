@@ -208,6 +208,9 @@ angular.module('reg')
                 name: 'Gender',
                 value: user.profile.gender || "N/A"
               },{
+                name: 'Race / Ethnicity',
+                value: user.profile.race || "N/A"
+              },{
                 name: 'School',
                 value: user.profile.school || "N/A"
               },{
