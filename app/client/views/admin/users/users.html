@@ -41,10 +41,10 @@
                      {{page}}
                   </a>
 
-                  <a class="icon item" ng-class="{disabled: currentPage == pages.length - 1}" ng-click="currentPage == pages.length - 1 || goToPage(currentPage - 1)">
+                  <a class="icon item" ng-class="{disabled: currentPage == pages.length - 1}" ng-click="currentPage == pages.length - 1 || goToPage(currentPage + 1)">
                      <i class="angle right icon"></i>
                   </a>
-                  <a class="icon item" ng-class="{disabled: currentPage == pages.length - 1}" ng-click="currentPage == pages.length - 1 || goToPage(0)">
+                  <a class="icon item" ng-class="{disabled: currentPage == pages.length - 1}" ng-click="currentPage == pages.length - 1 || goToPage(pages.length - 1)">
                      <i class="angle double right icon"></i>
                   </a>
                </div>
@@ -137,7 +137,7 @@
         <tbody>
           <tr
             ng-click="selectUser(user)"
-            ng-repeat="user in users | orderBy:sortType:sortReverse"
+            ng-repeat="user in users | limitTo:page:start | orderBy:sortType:sortReverse"
             ng-class="rowClass(user)">
             <td>
               <strong>
