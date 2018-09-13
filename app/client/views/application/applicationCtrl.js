@@ -127,6 +127,15 @@ angular.module('reg')
                 }
               ]
             },
+            birthdate: {
+              identifier: 'birthdate',
+              rules: [
+                {
+                  type: 'empty',
+                  prompt: 'Please enter your birthdate.'
+                }
+              ]
+            },
             race: {
               identifier: 'race',
               rules: [
