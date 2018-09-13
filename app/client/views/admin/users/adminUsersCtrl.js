@@ -8,8 +8,10 @@ angular.module('reg')
 
       $scope.pages = [];
       $scope.users = [];
+
       $scope.currentPage = 1;
-      $scope.page = $scope.currentPage * 50;
+      $scope.pageSize = 50;
+      $scope.page = $scope.currentPage * $scope.pageSize;
       $scope.begin = 0;
 
       $scope.sortType = 'name'; // set the default sort type
@@ -52,6 +54,11 @@ angular.module('reg')
           });
       });
 
+      // Whenever pageSize is changed, correct pagination numbers
+      $scope.$watch('pageSize', function() {
+        $scope.goToPage($scope.currentPage);
+      });
+
       $scope.goToPage = function(page){
         $scope.currentPage = page;
 
@@ -59,7 +66,7 @@ angular.module('reg')
         if (page === 0)
           $scope.begin = 0;
         else
-          $scope.begin = (page - 1) * 50;
+          $scope.begin = (page - 1) * $scope.pageSize;
       };
 
       $scope.goUser = function($event, user){
