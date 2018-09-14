@@ -8,9 +8,11 @@ angular.module('reg')
 
       $scope.pages = [];
       $scope.users = [];
-      $scope.currentPage = 0;
 
-      console.log($stateParams)
+      $scope.currentPage = 1;
+      $scope.pageSize = 50;
+      $scope.page = $scope.currentPage * $scope.pageSize;
+      $scope.begin = 0;
 
       $scope.sortType = 'name'; // set the default sort type
       $scope.sortReverse  = false;
@@ -52,20 +54,25 @@ angular.module('reg')
           });
       });
 
+      // Whenever pageSize is changed, correct pagination numbers
+      $scope.$watch('pageSize', function() {
+        $scope.goToPage($scope.currentPage);
+      });
+
       $scope.goToPage = function(page){
         $scope.currentPage = page;
 
-        $state.go('app.admin.users', {
-          page: page,
-          size: $stateParams.size || 50
-        });
+        // Check if the page number is 0
+        if (page === 0)
+          $scope.begin = 0;
+        else
+          $scope.begin = (page - 1) * $scope.pageSize;
       };
 
       $scope.goUser = function($event, user){
         $event.stopPropagation();
 
-        $('.long.user.modal')
-          .modal('hide');
+        $('.long.user.modal').modal('hide');
 
         $state.go('app.admin.user', {
           id: user._id
@@ -148,22 +155,18 @@ angular.module('reg')
       }
 
       $scope.rowClass = function(user) {
-        if (user.admin){
+        if (user.admin)
           return 'admin';
-        }
-        if (user.status.confirmed) {
+        if (user.status.confirmed) 
           return 'positive';
-        }
-        if (user.status.admitted && !user.status.confirmed) {
+        if (user.status.admitted && !user.status.confirmed) 
           return 'warning';
-        }
       };
 
       function selectUser(user){
         $scope.selectedUser = user;
         $scope.selectedUser.sections = generateSections(user);
-        $('.long.user.modal')
-          .modal('show');
+        $('.long.user.modal').modal('show');
       }
 
       function generateSections(user){
@@ -207,6 +210,9 @@ angular.module('reg')
               },{
                 name: 'Gender',
                 value: user.profile.gender || "N/A"
+              },{
+                name: 'Race / Ethnicity',
+                value: user.profile.race || "N/A"
               },{
                 name: 'School',
                 value: user.profile.school || "N/A"
