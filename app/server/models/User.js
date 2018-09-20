@@ -131,6 +131,7 @@ var confirmation = {
   // receipt: String,
 
   volunteer: Boolean,
+  mentor: Boolean,
   notes: String
 };
 
