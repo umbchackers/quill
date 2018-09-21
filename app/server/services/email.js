@@ -204,7 +204,7 @@ controller.sendAdmittanceEmail = function(email, callback){
 
   var options = {
     to: email,
-    subject: "["+HACKATHON_NAME+"] - You've been admitted!"
+    subject: "["+HACKATHON_NAME+"] - RSVP Now!"
   };
 
   var locals = {
