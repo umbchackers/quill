@@ -9,3 +9,4 @@ typings/
 .vscode
 .eslintrc.js
 tsd.json
+scripts/acceptUsersSuper.js
