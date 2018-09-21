@@ -3,7 +3,8 @@ angular.module('reg')
     '$scope',
     '$sce',
     'SettingsService',
-    function($scope, $sce, SettingsService){
+    'UserService',
+    function($scope, $sce, SettingsService, UserService){
 
       $scope.settings = {};
       SettingsService
@@ -11,6 +12,17 @@ angular.module('reg')
         .success(function(settings){
           updateSettings(settings);
         });
+
+      UserService
+        .getAll()
+        .success(function(data) {
+          console.log(data);
+        })
+        .error(function(err) {
+          console.log(err)
+        });
+        console.log("Test")
+      
 
       function updateSettings(settings){
         $scope.loading = false;
