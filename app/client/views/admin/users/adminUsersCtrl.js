@@ -6,68 +6,81 @@ angular.module('reg')
     'UserService',
     function($scope, $state, $stateParams, UserService){
 
-      $scope.pages = [];
-      $scope.users = [];
-
-      $scope.currentPage = 1;
-      $scope.pageSize = 50;
-      $scope.page = $scope.currentPage * $scope.pageSize;
-      $scope.begin = 0;
-
       $scope.sortType = 'name'; // set the default sort type
       $scope.sortReverse  = false;
+
+      $scope.users = [];
+      $scope.numPages = 0;
+      $scope.pageSize = 50;
+      $scope.currentPage = 0;
+      $scope.pageIndexes = [];
+      $scope.start = 0;
+
+      UserService
+        .getAll()
+        .success(function(data) {
+          $scope.users = data;
+
+          getNumPages();
+        });
+
+      // Whenever pageSize changes, update the paginator
+      $scope.$watch('pageSize', getNumPages);
+
+      $scope.$watch('queryText', function(queryText) {
+        // If it is just loaded or no search param
+        if (queryText == undefined || queryText == "") {
+          UserService
+          .getAll()
+          .success(function(data) {
+            $scope.users = data;
+
+            getNumPages();
+          });
+        }
+        // If there is a search param
+        else {
+          // TODO Create getAll with Query param
+          UserService
+          .getPage($scope.currentPage, $scope.pageSize, queryText)
+          .success(function(data) {
+            $scope.users = data.users;
+
+            getNumPages();
+          });
+        }
+      });
+
+      // Get the number of pages to be shown in the paginator
+      function getNumPages() {
+        $scope.numPages = Math.ceil($scope.users.length / $scope.pageSize);
+
+        // TODO Make this skip numbers and show "..." if there are too many numbers
+        // TODO Add ng-disabled="pageIndex == '...'" on the paginator
+        $scope.pageIndexes = [];
+        for (var i = 0; i < $scope.numPages; i++) {
+          $scope.pageIndexes.push(i);
+        }
+      }
+
+      // Change the page number and shift the Angular ng-repeat filter
+      $scope.goToPage = function(page) {
+        $scope.currentPage = page;
+
+        $scope.start = $scope.currentPage * $scope.pageSize;
+      };
 
       // Semantic-UI moves modal content into a dimmer at the top level.
       // While this is usually nice, it means that with our routing will generate
       // multiple modals if you change state. Kill the top level dimmer node on initial load
       // to prevent this.
       $('.ui.dimmer').remove();
+
       // Populate the size of the modal for when it appears, with an arbitrary user.
       $scope.selectedUser = {};
       $scope.selectedUser.sections = generateSections({status: '', confirmation: {
         dietaryRestrictions: []
       }, profile: ''});
-
-      function updatePage(data){
-        $scope.users = data.users;
-        $scope.currentPage = data.page;
-        $scope.pageSize = data.size;
-
-        var p = [];
-        for (var i = 0; i < data.totalPages; i++){
-          p.push(i);
-        }
-        $scope.pages = p;
-      }
-
-      UserService
-        .getPage($stateParams.page, $stateParams.size, $stateParams.query)
-        .success(function(data){
-          updatePage(data);
-        });
-
-      $scope.$watch('queryText', function(queryText){
-        UserService
-          .getPage($stateParams.page, $stateParams.size, queryText)
-          .success(function(data){
-            updatePage(data);
-          });
-      });
-
-      // Whenever pageSize is changed, correct pagination numbers
-      $scope.$watch('pageSize', function() {
-        $scope.goToPage($scope.currentPage);
-      });
-
-      $scope.goToPage = function(page){
-        $scope.currentPage = page;
-
-        // Check if the page number is 0
-        if (page === 0)
-          $scope.begin = 0;
-        else
-          $scope.begin = (page - 1) * $scope.pageSize;
-      };
 
       $scope.goUser = function($event, user){
         $event.stopPropagation();
@@ -155,6 +168,8 @@ angular.module('reg')
       }
 
       $scope.rowClass = function(user) {
+        if (user.status == undefined)
+          return '';
         if (user.admin)
           return 'admin';
         if (user.status.confirmed) 
