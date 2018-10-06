@@ -47,8 +47,8 @@
                      <i class="angle left icon"></i>
                   </a>
 
-                  <a class="item" ng-repeat="page in pages" ng-click="goToPage(page)">
-                     {{page}}
+                  <a class="item" ng-class="{active: currentPage == $index}"ng-repeat="page in pageIndexes track by $index" ng-click="goToPage(page)">
+                     {{$index}}
                   </a>
 
                   <a class="icon item" ng-class="{disabled: currentPage == pages.length - 1}" ng-click="currentPage == pages.length - 1 || goToPage(currentPage + 1)">
@@ -147,7 +147,7 @@
         <tbody>
           <tr
             ng-click="selectUser(user)"
-            ng-repeat="user in users | limitTo:page:start | orderBy:sortType:sortReverse"
+            ng-repeat="user in users | limitTo:pageSize:start | orderBy:sortType:sortReverse"
             ng-class="rowClass(user)">
             <td>
               <strong>
