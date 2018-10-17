@@ -9,18 +9,20 @@
             ng-class="{'loading': loading}">
 
         <div class="divided title">Basic Information</div>
+        <p>* Required</p>
 
         <fieldset ng-disabled="regIsClosed">
 
         <div class="field">
-          <label> Full Name </label>
+          <label> Full Name * </label>
           <input type="text"
                 name="name"
-                ng-model="user.profile.name">
+                ng-model="user.profile.name"
+                 required>
         </div>
 
         <div class="field">
-          <label> Email </label>
+          <label> Email * </label>
           <input type="email"
                  name="email"
                  disabled="disabled"
@@ -28,7 +30,7 @@
         </div>
 
         <div class="field">
-          <label> What's your phone number? (required) </label>
+          <label> What's your phone number? * </label>
           <p>
             We need this in case we have to urgently contact you!
           </p>
@@ -40,55 +42,69 @@
         </div>
 
         <div class="field">
-          <label> Date of Birth </label>
+          <label> Date of Birth * </label>
           <input type="date"
                   name="birthdate"
-                  ng-model="user.profile.birthdate">
+                  ng-model="user.profile.birthdate"
+                  required>
         </div>        
 
         <div class="field" ng-show="autoFilledSchool">
-          <label> School </label>
+          <label> School * </label>
           <input class="ui input"
                  disabled="disabled"
                  ng-show="autoFilledSchool"
-                 ng-model="user.profile.school">
+                 ng-model="user.profile.school"
+                 required>
         </div>
 
         <div class="field">
-          <label> Race/Ethnicity </label>
+          <label> Race/Ethnicity * </label>
           <small> Please select all that apply. </small>
 
           <style>.select2-search__field {display:none}</style>
-          <select name="race" id="race" ng-model="user.profile.race" multiple="multiple">
+          <select name="race" 
+                  id="race" 
+                  ng-model="user.profile.race" 
+                  multiple="multiple" 
+                  required>
             <option ng-repeat="race in ['Asian / Pacific Islander', 'Black or African American', 'Hispanic', 'Native American', 'White / Caucasian', 'Prefer Not to Answer']">{{race}}</option>
           </select>
           <script>$("#race").select2();</script>
         </div>
 
         <div class="field" ng-show="!autoFilledSchool">
-          <label> School </label>
+          <label> School * </label>
           <div id="school" class="ui search">
             <div class="ui input">
-              <input class="prompt" type="text" placeholder="School" name="school" ng-model="user.profile.school">
+              <input class="prompt" 
+                     type="text" 
+                     placeholder="School" 
+                     name="school" 
+                     ng-model="user.profile.school" 
+                     required>
             </div>
+            
             <div class="results"></div>
           </div>
         </div>
 
         <div class="field">
-          <label> Major </label> 
+          <label> Major * </label> 
           <input class="ui input"
                  name="major"
-                 ng-model="user.profile.major">
+                 ng-model="user.profile.major"
+                 required>
         </div>
 
         <div class="field">
-          <label> Graduation Year </label>
-          <select
-            name="year"
-            id="gradYears"
-            ng-model="user.profile.graduationYear">
+          <label> Graduation Year * </label>
+          <select name="year" 
+                  id="gradYears"
+                  ng-model="user.profile.graduationYear"
+                  required>
             <option value="">Graduation Year</option>
+            
             <script>
               var graduationYears = document.getElementById("gradYears");
 
@@ -101,10 +117,10 @@
         </div>
 
         <div class="field">
-          <label>Gender</label>
-          <select
-            name="gender"
-            ng-model="user.profile.gender">
+          <label> Gender * </label>
+          <select name="gender"
+                  ng-model="user.profile.gender"
+                  required>
             <option value="">Gender</option>
             <option value="M">Male</option>
             <option value="F">Female</option>
@@ -114,7 +130,7 @@
         </div>
 
         <div class="field">
-          <label>I would describe myself as a...</label>
+          <label> I would describe myself as a... </label>
           <input type="text"
                  placeholder="Designer, Data Scientist, iOS Wizard, Hacker Extraordinaire"
                  ng-model="user.profile.description">
@@ -122,7 +138,7 @@
 
         <div class="field">
           <label>
-              What would you like to learn or get out of {{ EVENT_INFO.SHORT_NAME }}? (optional)
+              What would you like to learn or get out of {{ EVENT_INFO.SHORT_NAME }}?
           </label>
           <textarea ng-model="user.profile.essay">
           </textarea>
@@ -131,13 +147,13 @@
         <!--Bonus Questions-->
         <div class="divided title">Bonus Questions</div>
         <div class="field">
-          <label>What is your favorite city in the world?</label>
+          <label> What is your favorite city in the world? </label>
           <input type="text"
                  name="name"
                  ng-model="user.profile.question1">
         </div>
         <div class="field">
-          <label>Who's the best school in the universe?</label>
+          <label> Who's the best school in the universe? </label>
           <select
             name="question2"
             ng-model="user.profile.question2">
@@ -146,7 +162,7 @@
           </select>
         </div>
         <div class="field">
-          <label>How are you doing today?</label>
+          <label> How are you doing today? </label>
           <input type="text"
                  name="name"
                  ng-model="user.profile.question3">
