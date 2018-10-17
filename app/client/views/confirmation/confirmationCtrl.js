@@ -84,19 +84,20 @@ angular.module('reg')
 
       function _setupForm(){
         // Semantic-UI form validation
-        $('.ui.form').form({
-          fields: {
-            shirt: {
-              identifier: 'shirt',
-              rules: [
-                {
-                  type: 'empty',
-                  prompt: 'Please give us a shirt size!'
-                }
-              ]
-            },
-          }
-        });
+//         $('.ui.form').form({
+//           fields: {
+//             shirt: {
+//               identifier: 'shirt',
+//               rules: [
+//                 {
+//                   type: 'empty',
+//                   prompt: 'Please give us a shirt size!'
+//                 }
+//               ]
+//             },
+//           }
+//         });
+        $('.ui.form').form({});
       }
 
       $scope.submitForm = function(){
