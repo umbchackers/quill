@@ -188,7 +188,7 @@
         </div>
 
           <div class="field">
-            <label> MLH Code of Conduct </label>
+            <label> MLH Code of Conduct * </label>
             <p>
               I will at all times abide by and conform to the Major League Hacking Code of Conduct while at the event (<a href="http://mlh.io/code-of-conduct" target="_blank">http://mlh.io/code-of-conduct</a>)
             </p>
@@ -198,11 +198,12 @@
             <input type="text"
                    name="signatureCodeOfConduct"
                    placeholder="Your Full Legal Name"
-                   ng-model="user.profile.signatureCodeOfConduct">
+                   ng-model="user.profile.signatureCodeOfConduct"
+                   required>
           </div>
 
           <div class="field">
-            <label> MLH Member Event Confirmation </label>
+            <label> MLH Member Event Confirmation * </label>
             <p>
               We participate in Major League Hacking (MLH) as a MLH Member Event. You authorize us to share certain application/registration information for event administration, ranking, MLH administration, and occasional messages about hackathons in line with the <a href="https://mlh.io/privacy" target="_blank">MLH Privacy Policy</a>.
             </p>
@@ -212,7 +213,8 @@
             <input type="text"
                    name="signatureLiabilityWaiver"
                    placeholder="Your Full Legal Name"
-                   ng-model="user.profile.signatureMLHMemberEvent">
+                   ng-model="user.profile.signatureMLHMemberEvent"
+                   required>
           </div>
 
         <br>
