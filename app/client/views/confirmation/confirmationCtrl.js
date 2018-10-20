@@ -30,6 +30,7 @@ angular.module('reg')
         'Vegan': false,
         'Halal': false,
         'Kosher': false,
+        'Lactose Intolerant': false,
         'Nut Allergy': false,
         'Gluten-Free': false,
         'Other': false
@@ -84,19 +85,20 @@ angular.module('reg')
 
       function _setupForm(){
         // Semantic-UI form validation
-        $('.ui.form').form({
-          fields: {
-            shirt: {
-              identifier: 'shirt',
-              rules: [
-                {
-                  type: 'empty',
-                  prompt: 'Please give us a shirt size!'
-                }
-              ]
-            },
-          }
-        });
+//         $('.ui.form').form({
+//           fields: {
+//             shirt: {
+//               identifier: 'shirt',
+//               rules: [
+//                 {
+//                   type: 'empty',
+//                   prompt: 'Please give us a shirt size!'
+//                 }
+//               ]
+//             },
+//           }
+//         });
+        $('.ui.form').form({});
       }
 
       $scope.submitForm = function(){

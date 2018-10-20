@@ -25,7 +25,8 @@ angular.module('reg')
         });
 
       // Whenever pageSize changes, update the paginator
-      $scope.$watch('pageSize', getNumPages);
+     // $scope.$watch('pageSize', getNumPages);
+      $scope.$watch('currentPage', getNumPages);
 
       $scope.$watch('queryText', function(queryText) {
         // If it is just loaded or no search param
@@ -58,8 +59,29 @@ angular.module('reg')
         // TODO Make this skip numbers and show "..." if there are too many numbers
         // TODO Add ng-disabled="pageIndex == '...'" on the paginator
         $scope.pageIndexes = [];
-        for (var i = 0; i < $scope.numPages; i++) {
-          $scope.pageIndexes.push(i);
+
+        if ($scope.numPages > 5) {
+          if ($scope.currentPage > 1) {
+            $scope.pageIndexes.push($scope.currentPage);
+
+            if ($scope.currentPage + 2 <= $scope.numPages) {
+              $scope.pageIndexes.push($scope.currentPage + 1); 
+              $scope.pageIndexes.push($scope.currentPage + 2);
+            }
+          }
+          else {
+            $scope.pageIndexes.push(0);
+            $scope.pageIndexes.push(1);
+            $scope.pageIndexes.push(2);
+          }
+          $scope.pageIndexes.push("...");
+           
+          $scope.pageIndexes.push($scope.numPages - 2);
+          $scope.pageIndexes.push($scope.numPages - 1);
+        }
+        else {
+          for (var i = 0; i < $scope.numPages; i++) 
+            $scope.pageIndexes.push(i);
         }
       }
 

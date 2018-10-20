@@ -2,6 +2,7 @@
   <div class="divided title">
     Confirmation
   </div>
+ 
 
   <div class="ui stackable page grid">
     <div class="column">
@@ -9,6 +10,7 @@
       <div class="ui form">
 
         <div class="divided title">Basic Details</div>
+        <p> * Required </p>
 
         <fieldset ng-disabled="pastConfirmation">
 
@@ -36,7 +38,7 @@
           <br><br>
 
           <div class="field">
-            <label> Shirt Size (required) </label>
+            <label> Shirt Size * </label>
             <p>
               Let's get you some swag!
             </p>
@@ -45,12 +47,12 @@
               ng-model="user.confirmation.shirtSize"
               required>
               <option value="">Shirt Size</option>
-              <option value="XS">Unisex X-Small</option>
-              <option value="S">Unisex Small</option>
-              <option value="M">Unisex Medium</option>
-              <option value="L">Unisex Large</option>
-              <option value="XL">Unisex X-Large</option>
-              <option value="XXL">Unisex XX-Large</option>
+              <option value="XS">X-Small</option>
+              <option value="S">Small</option>
+              <option value="M">Medium</option>
+              <option value="L">Large</option>
+              <option value="XL">X-Large</option>
+              <option value="XXL">XX-Large</option>
             </select>
           </div>
 
@@ -92,7 +94,7 @@
           </div>
 
           <div class="field">
-            <label> Resume (required) </label>
+            <label> Resume * </label>
             <p>
               Upload a resume outlining any skills or experience you'd like to share. PDF preferred!
             </p>
@@ -206,7 +208,7 @@
           <br>
           <br>
 
-          <div class="divided title">everything else</div>
+          <div class="divided title"> everything else </div>
 
           <!-- <div class="field" ng-show="isUMBCStudent">
             <label> Being a Hackathon Volunteer </label>

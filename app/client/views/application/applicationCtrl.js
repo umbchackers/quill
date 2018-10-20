@@ -118,78 +118,78 @@ angular.module('reg')
         $('.ui.form').form({
           inline: true,
           fields: {
-            name: {
-              identifier: 'name',
-              rules: [
-                {
-                  type: 'empty',
-                  prompt: 'Please enter your name.'
-                }
-              ]
-            },
-            birthdate: {
-              identifier: 'birthdate',
-              rules: [
-                {
-                  type: 'empty',
-                  prompt: 'Please enter your birthdate.'
-                }
-              ]
-            },
-            race: {
-              identifier: 'race',
-              rules: [
-                {
-                  type: 'empty',
-                  prompt: 'Please select your race/ethnicity.'
-                }
-              ]
-            },
-            phone: {
-              identifier: 'phone',
-              rules: [
-                {
-                  type: 'empty',
-                  prompt: 'Please enter a phone number.'
-                }
-              ]
-            },
-            school: {
-              identifier: 'school',
-              rules: [
-                {
-                  type: 'empty',
-                  prompt: 'Please enter your school name.'
-                }
-              ]
-            },
-            major: {
-              identifier: 'major',
-              rules: [
-                {
-                  type: 'empty',
-                  prompt: 'Please enter your major.'
-                }
-              ]
-            },
-            year: {
-              identifier: 'year',
-              rules: [
-                {
-                  type: 'empty',
-                  prompt: 'Please select your graduation year.'
-                }
-              ]
-            },
-            gender: {
-              identifier: 'gender',
-              rules: [
-                {
-                  type: 'empty',
-                  prompt: 'Please select a gender.'
-                }
-              ]
-            },
+//             name: {
+//               identifier: 'name',
+//               rules: [
+//                 {
+//                   type: 'empty',
+//                   prompt: 'Please enter your name.'
+//                 }
+//               ]
+//             },
+//             birthdate: {
+//               identifier: 'birthdate',
+//               rules: [
+//                 {
+//                   type: 'empty',
+//                   prompt: 'Please enter your birthdate.'
+//                 }
+//               ]
+//             },
+//             race: {
+//               identifier: 'race',
+//               rules: [
+//                 {
+//                   type: 'empty',
+//                   prompt: 'Please select your race/ethnicity.'
+//                 }
+//               ]
+//             },
+//             phone: {
+//               identifier: 'phone',
+//               rules: [
+//                 {
+//                   type: 'empty',
+//                   prompt: 'Please enter a phone number.'
+//                 }
+//               ]
+//             },
+//             school: {
+//               identifier: 'school',
+//               rules: [
+//                 {
+//                   type: 'empty',
+//                   prompt: 'Please enter your school name.'
+//                 }
+//               ]
+//             },
+//             major: {
+//               identifier: 'major',
+//               rules: [
+//                 {
+//                   type: 'empty',
+//                   prompt: 'Please enter your major.'
+//                 }
+//               ]
+//             },
+//             year: {
+//               identifier: 'year',
+//               rules: [
+//                 {
+//                   type: 'empty',
+//                   prompt: 'Please select your graduation year.'
+//                 }
+//               ]
+//             },
+//             gender: {
+//               identifier: 'gender',
+//               rules: [
+//                 {
+//                   type: 'empty',
+//                   prompt: 'Please select a gender.'
+//                 }
+//               ]
+//             },
             adult: {
               identifier: 'adult',
               rules: [
@@ -199,24 +199,24 @@ angular.module('reg')
                 }
               ]
             },
-            signatureCodeOfConduct: {
-              identifier: 'signatureCodeOfConduct',
-              rules: [
-                {
-                  type: 'empty',
-                  prompt: 'Please type your digital signature.'
-                }
-              ]
-            },
-            signatureMLHMemberEvent: {
-              identifier: 'signatureMLHMemberEvent',
-              rules: [
-                {
-                  type: 'empty',
-                  prompt: 'Please type your digital signature.'
-                }
-              ]
-            }
+//             signatureCodeOfConduct: {
+//               identifier: 'signatureCodeOfConduct',
+//               rules: [
+//                 {
+//                   type: 'empty',
+//                   prompt: 'Please type your digital signature.'
+//                 }
+//               ]
+//             },
+//             signatureMLHMemberEvent: {
+//               identifier: 'signatureMLHMemberEvent',
+//               rules: [
+//                 {
+//                   type: 'empty',
+//                   prompt: 'Please type your digital signature.'
+//                 }
+//               ]
+//             }
           }
         });
       }

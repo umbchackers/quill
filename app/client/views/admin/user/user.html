@@ -2,6 +2,7 @@
 
   <div class="ui header">
     {{selectedUser.profile.name ? selectedUser.profile.name : selectedUser.email}}
+    <span style="color: gold" ng-show="selectedUser.confirmation.dietaryRestrictions.length > 0">&#9650;</span>
     <span
       ng-show="selectedUser.admin">
       (Admin)
