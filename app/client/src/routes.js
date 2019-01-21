@@ -8,10 +8,10 @@ angular.module('reg')
       $urlRouterProvider,
       $locationProvider) {
 
-    // For any unmatched url, redirect to /state1
+    // For any unmatched url, redirect to /404
     $urlRouterProvider.otherwise("/404");
 
-    // Set up de states
+    // Set up the states
     $stateProvider
       .state('login', {
         url: "/login",
@@ -71,6 +71,19 @@ angular.module('reg')
             return UserService.getCurrentUser();
           },
           settings: function(SettingsService){
+            return SettingsService.getPublicSettings();
+          }
+        }
+      })
+      .state('app.walkin', {
+        url: "/walkin",
+        templateURL: "views/walkin/walkin.html",
+        controller: "WalkinCtrl",
+        resolve: {
+          currentUser: function(UserService) {
+            return UserService.getCurrentUser();
+          },
+          settings: function(SettingsService) {
             return SettingsService.getPublicSettings();
           }
         }
@@ -181,10 +194,12 @@ angular.module('reg')
     '$rootScope',
     '$state',
     'Session',
+    '$location',
     function(
       $rootScope,
       $state,
-      Session ){
+      Session,
+      $location){
 
       $rootScope.$on('$stateChangeSuccess', function() {
          document.body.scrollTop = document.documentElement.scrollTop = 0;

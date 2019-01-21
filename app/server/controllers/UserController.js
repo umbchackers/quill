@@ -416,6 +416,19 @@ UserController.verifyByToken = function(token, callback){
   });
 };
 
+UserController.manuallyVerify = function(email, callback){
+  User.findOneAndUpdate({
+    email: email.toLowerCase()
+  },{
+    $set: {
+      'verified': true
+    }
+  }, {
+    new: true
+  },
+  callback);
+};
+
 /**
  * Get a specific user's teammates. NAMES ONLY.
  * @param  {String}   id       id of the user we're looking for.

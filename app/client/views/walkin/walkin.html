@@ -1,0 +1,197 @@
+<div id="walkin" class="page">
+  <div class="divided title">
+    Walkin Application
+  </div>
+
+  <div class="ui stackable page grid">
+    <div class="column">
+      <div class="ui form"
+            ng-class="{'loading': loading}">
+
+        <div class="divided title">Basic Information</div>
+        <p>* Required</p>
+
+ 
+
+        <div class="field">
+          <label> Full Name * </label>
+          <input type="text"
+                name="name"
+                ng-model="user.profile.name"
+                 required>
+        </div>
+
+        <div class="field">
+          <label> Email * </label>
+          <input type="email"
+                 name="email"
+                 disabled="disabled"
+                 ng-model="user.email">
+        </div>
+
+        <div class="field">
+          <label> What's your phone number? * </label>
+          <p>
+            We need this in case we have to urgently contact you!
+          </p>
+          <input type="tel"
+                 name="phone"
+                 ng-model="user.profile.phoneNumber"
+                 placeholder="(123) - 555 - 1234"
+                 required>
+        </div>
+
+        <div class="field">
+          <label> Date of Birth * </label>
+          <input type="date"
+                  name="birthdate"
+                  ng-model="user.profile.birthdate"
+                  required>
+        </div>        
+
+        <div class="field" ng-show="autoFilledSchool">
+          <label> School * </label>
+          <input class="ui input"
+                 disabled="disabled"
+                 ng-show="autoFilledSchool"
+                 ng-model="user.profile.school"
+                 required>
+        </div>
+
+        <div class="field">
+          <label> Race/Ethnicity * </label>
+          <small> Please select all that apply. </small>
+
+          <style>.select2-search__field {display:none}</style>
+          <select name="race" 
+                  id="race" 
+                  ng-model="user.profile.race" 
+                  multiple="multiple" 
+                  required>
+            <option ng-repeat="race in ['Asian / Pacific Islander', 'Black or African American', 'Hispanic', 'Native American', 'White / Caucasian', 'Prefer Not to Answer']">{{race}}</option>
+          </select>
+          <script>$("#race").select2();</script>
+        </div>
+
+        <div class="field" ng-show="!autoFilledSchool">
+          <label> School * </label>
+          <div id="school" class="ui search">
+            <div class="ui input">
+              <input class="prompt" 
+                     type="text" 
+                     placeholder="School" 
+                     name="school" 
+                     ng-model="user.profile.school" 
+                     required>
+            </div>
+            
+            <div class="results"></div>
+          </div>
+        </div>
+
+        <div class="field">
+          <label> Major * </label> 
+          <input class="ui input"
+                 name="major"
+                 ng-model="user.profile.major"
+                 required>
+        </div>
+
+        <div class="field">
+          <label> Graduation Year * </label>
+          <select name="year" 
+                  id="gradYears"
+                  ng-model="user.profile.graduationYear"
+                  required>
+            <option value="">Graduation Year</option>
+            
+            <script>
+              var graduationYears = document.getElementById("gradYears");
+
+              var y = new Date().getFullYear();
+
+              for (var i = 0; i < 5; i++)
+                graduationYears.innerHTML += '<option value="'  + (y + i) + '">' + (y + i) + '</option>';
+            </script>
+          </select>
+        </div>
+
+        <div class="field">
+          <label> Gender * </label>
+          <select name="gender"
+                  ng-model="user.profile.gender"
+                  required>
+            <option value="">Gender</option>
+            <option value="M">Male</option>
+            <option value="F">Female</option>
+            <option value="O">Other</option>
+            <option value="N">I prefer not to answer.</option>
+          </select>
+        </div>
+
+        <div class="divided title">Legal</div>
+
+        <div class="field"
+             ng-hide="isUMBCStudent">
+          <p>
+            Because of limitations imposed by {{ EVENT_INFO.SCHOOL }}, we must know if you are a
+            non-{{ EVENT_INFO.SCHOOL }} minor (those under 18) for {{ EVENT_INFO.NAME }}. Checking the box below affirms that you are or will be 18 years or older by {{ EVENT_INFO.START_DATE }}.
+          </p>
+          <p>
+            <strong>
+            We will be checking ID. If you are a non-{{ EVENT_INFO.SCHOOL }} minor, you will be turned away at the door. *
+            </strong>
+          </p>
+          <div class="ui checkbox">
+            <input type="checkbox" id="adult" ng-model="user.profile.adult">
+            <label for="adult">By checking here, I acknowledge that I understand that to attend HackUMBC, I must be 18 years of age or older.</label>
+          </div>
+        </div>
+
+          <div class="field">
+            <label> MLH Code of Conduct * </label>
+            <p>
+              I will at all times abide by and conform to the Major League Hacking Code of Conduct while at the event (<a href="http://mlh.io/code-of-conduct" target="_blank">http://mlh.io/code-of-conduct</a>)
+            </p>
+            <p>
+              By writing my name below, I affirm that I have read and will abide by the code of conduct detailed above.
+            </p>
+            <input type="text"
+                   name="signatureCodeOfConduct"
+                   placeholder="Your Full Legal Name"
+                   ng-model="user.profile.signatureCodeOfConduct"
+                   required>
+          </div>
+
+          <div class="field">
+            <label> MLH Member Event Confirmation * </label>
+            <p>
+              We participate in Major League Hacking (MLH) as a MLH Member Event. You authorize us to share certain application/registration information for event administration, ranking, MLH administration, and occasional messages about hackathons in line with the <a href="https://mlh.io/privacy" target="_blank">MLH Privacy Policy</a>.
+            </p>
+            <p>
+              By writing my name below, I affirm that I understand that my data will be shared with MLH in accordance to their <a href="https://mlh.io/privacy" target="_blank">Privacy Policy</a>.
+            </p>
+            <input type="text"
+                   name="signatureLiabilityWaiver"
+                   placeholder="Your Full Legal Name"
+                   ng-model="user.profile.signatureMLHMemberEvent"
+                   required>
+          </div>
+
+        <br>
+
+        <div class="field">
+          <button type="submit"
+                  class="fluid ui purple button"
+                  ng-click="submitForm()">
+            Submit
+          </button>
+        </div>
+
+        <p>Found a bug? Let us know at <a href="mailto:team@hackumbc.org">team@hackumbc.org</a>.</p>
+
+        </fieldset>
+      </div>
+    </div>
+  </div>
+</div>

@@ -5,8 +5,11 @@ app/client/plugins/
 typings/
 *.log
 .env
-.DS_Store
-.vscode
 .eslintrc.js
 tsd.json
-scripts/acceptUsersSuper.js
+
+*.txt
+*.csv
+.DS_Store
+.vscode
+package-lock.json
