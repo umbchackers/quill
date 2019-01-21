@@ -77,7 +77,7 @@ angular.module('reg')
       })
       .state('app.walkin', {
         url: "/walkin",
-        templateURL: "views/walkin/walkin.html",
+        templateUrl: "views/walkin/walkin.html",
         controller: "WalkinCtrl",
         resolve: {
           currentUser: function(UserService) {

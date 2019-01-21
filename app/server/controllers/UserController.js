@@ -283,17 +283,17 @@ UserController.updateProfileById = function (id, profile, callback){
 
       var now = Date.now();
 
-      if (now < times.timeOpen){
-        return callback({
-          message: "Registration opens in " + moment(times.timeOpen).fromNow() + "!"
-        });
-      }
+      // if (now < times.timeOpen){
+      //   return callback({
+      //     message: "Registration opens in " + moment(times.timeOpen).fromNow() + "!"
+      //   });
+      // }
 
-      if (now > times.timeClose){
-        return callback({
-          message: "Sorry, registration is closed."
-        });
-      }
+      // if (now > times.timeClose){
+      //   return callback({
+      //     message: "Sorry, registration is closed."
+      //   });
+      // }
     });
 
     User.findOneAndUpdate({
