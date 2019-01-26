@@ -116,6 +116,19 @@ module.exports = function(router) {
   // ---------------------------------------------
 
   /**
+   * 
+   *
+   * PUT - Save walkin application.
+   */
+  router.put('/users/:id/walkin', function (req, res) {
+    var id = req.params.id;
+    var profile = req.body.profile;
+    var confirmation = req.body.confirmation;
+
+    UserController.updateWalkinApp(id, profile, confirmation, defaultResponse(req, res));
+  });
+
+  /**
    * [ADMIN ONLY]
    *
    * GET - Get all users, or a page at a time.

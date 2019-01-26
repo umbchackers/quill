@@ -66,7 +66,7 @@ angular.module('reg')
 
       function _updateUser(e){
         UserService
-          .updateProfile(Session.getUserId(), $scope.user.profile)
+          .updateWalkinApp(Session.getUserId(), $scope.user.profile, $scope.user.confirmation)
           .success(function(data){
             sweetAlert({
               title: "Awesome!",
@@ -74,6 +74,7 @@ angular.module('reg')
               type: "success",
               confirmButtonColor: "#e76482"
             }, function(){
+              // TODO accept and confirm this user automagically
               $state.go('app.dashboard');
             });
           })

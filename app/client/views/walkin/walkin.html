@@ -7,10 +7,7 @@
     <div class="column">
       <div class="ui form">
 
-        <div class="divided title">Basic Information</div>
         <p>* Required</p>
-
- 
 
         <div class="field">
           <label> Full Name * </label>
@@ -125,6 +122,23 @@
             <option value="F">Female</option>
             <option value="O">Other</option>
             <option value="N">I prefer not to answer.</option>
+          </select>
+        </div>
+
+        <div class="field">
+          <label> Shirt Size * </label>
+          <p>
+            Let's get you some swag!
+          </p>
+          
+          <select name="shirt" ng-model="user.confirmation.shirtSize" required>
+            <option value="">Shirt Size</option>
+            <option value="XS">X-Small</option>
+            <option value="S">Small</option>
+            <option value="M">Medium</option>
+            <option value="L">Large</option>
+            <option value="XL">X-Large</option>
+            <option value="XXL">XX-Large</option>
           </select>
         </div>
 

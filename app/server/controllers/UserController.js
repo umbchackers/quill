@@ -283,17 +283,17 @@ UserController.updateProfileById = function (id, profile, callback){
 
       var now = Date.now();
 
-      // if (now < times.timeOpen){
-      //   return callback({
-      //     message: "Registration opens in " + moment(times.timeOpen).fromNow() + "!"
-      //   });
-      // }
+      if (now < times.timeOpen){
+        return callback({
+          message: "Registration opens in " + moment(times.timeOpen).fromNow() + "!"
+        });
+      }
 
-      // if (now > times.timeClose){
-      //   return callback({
-      //     message: "Sorry, registration is closed."
-      //   });
-      // }
+      if (now > times.timeClose){
+        return callback({
+          message: "Sorry, registration is closed."
+        });
+      }
     });
 
     User.findOneAndUpdate({
@@ -313,6 +313,49 @@ UserController.updateProfileById = function (id, profile, callback){
       callback);
 
   });
+};
+
+UserController.updateWalkinApp = function(id, profile, confirmation, callback) {
+    // Check if its within the registration window.
+    Settings.getRegistrationTimes(function (err, times) {
+      if (err) {
+        callback(err);
+      }
+
+      var now = Date.now();
+
+      if (now < times.timeOpen){
+        return callback({
+          message: "Registration opens in " + moment(times.timeOpen).fromNow() + "!"
+        });
+      }
+
+      // if (now < times.timeClose){
+      //   return callback({
+      //     message: "Sorry, walkin applications are ."
+      //   });
+      // }
+    });
+
+    User.findOneAndUpdate({
+      _id: id,
+      verified: true
+    },
+      {
+        $set: {
+          'lastUpdated': Date.now(),
+          'profile': profile,
+          'confirmation': confirmation,
+          'status.completedProfile': true,
+          'status.admitted': true,
+          'status.confirmed': true,
+          'status.checkedIn': true
+        }
+      },
+      {
+        new: true
+      },
+      callback);
 };
 
 /**
