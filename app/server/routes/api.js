@@ -116,16 +116,13 @@ module.exports = function(router) {
   // ---------------------------------------------
 
   /**
-   * 
-   *
    * PUT - Save walkin application.
    */
-  router.put('/users/:id/walkin', function (req, res) {
-    var id = req.params.id;
+  router.put('/users/walkin', function (req, res) {
     var profile = req.body.profile;
     var confirmation = req.body.confirmation;
 
-    UserController.updateWalkinApp(id, profile, confirmation, defaultResponse(req, res));
+    UserController.updateWalkinApp(profile, confirmation, defaultResponse(req, res));
   });
 
   /**

@@ -315,7 +315,7 @@ UserController.updateProfileById = function (id, profile, callback){
   });
 };
 
-UserController.updateWalkinApp = function(id, profile, confirmation, callback) {
+UserController.updateWalkinApp = function(profile, confirmation, callback) {
     // Check if its within the registration window.
     Settings.getRegistrationTimes(function (err, times) {
       if (err) {
@@ -324,38 +324,60 @@ UserController.updateWalkinApp = function(id, profile, confirmation, callback) {
 
       var now = Date.now();
 
-      if (now < times.timeOpen){
+      if (now < times.timeOpen) {
         return callback({
           message: "Registration opens in " + moment(times.timeOpen).fromNow() + "!"
         });
       }
-
-      // if (now < times.timeClose){
+      // else if (now < times.timeClose){
       //   return callback({
       //     message: "Sorry, walkin applications are ."
       //   });
       // }
-    });
+      else {
+        var email = profile.email;
+        var nounList = ["apple", "hunter", "paper", "phone", "swim", "orange"];
+        var defaultPassword = "p3g5g5p4";
 
-    User.findOneAndUpdate({
-      _id: id,
-      verified: true
-    },
-      {
-        $set: {
-          'lastUpdated': Date.now(),
-          'profile': profile,
-          'confirmation': confirmation,
-          'status.completedProfile': true,
-          'status.admitted': true,
-          'status.confirmed': true,
-          'status.checkedIn': true
-        }
-      },
-      {
-        new: true
-      },
-      callback);
+        canRegister(email, defaultPassword, function (err, valid) {
+          if (err || !valid) {
+            return callback(err);
+          }
+
+          var u = new User();
+          u.email = email;
+          u.password = User.generateHash(defaultPassword);
+          // u.password = User.generateHash(nounList[Math.floor(Math.random() * nounList.length)] 
+          //                                + Math.ceil(Math.random() * 30));
+
+          u.profile = profile;
+          u.confirmation = confirmation;
+          u.lastUpdated = Date.now();
+          u.verified = true;
+
+          u.status.completedProfile = true;
+          u.status.admitted = true;
+          u.status.confirmed = true;
+          u.status.checkedIn = true;
+
+          u.save(function(err) {
+            if (err) {
+              // Duplicate key error codes
+              if (err.name === 'MongoError' && (err.code === 11000 || err.code === 11001)) {
+                return callback({
+                  message: 'An account for this email already exists.'
+                });
+              }
+
+              return callback(err);
+            }
+            else {
+              return callback(null, { user: u});
+            }
+          });
+        });
+      }
+    });
 };
 
 /**

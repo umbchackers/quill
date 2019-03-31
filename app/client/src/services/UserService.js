@@ -40,8 +40,8 @@ angular.module('reg')
         });
       },
 
-      updateWalkinApp: function(id, profile, confirmation) {
-        return $http.put(base + id + '/walkin', {
+      updateWalkinApp: function(profile, confirmation) {
+        return $http.put(base + 'walkin', {
           profile: profile,
           confirmation: confirmation
         });

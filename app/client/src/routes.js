@@ -26,6 +26,11 @@ angular.module('reg')
           }
         }
       })
+      .state('walkin', {
+        url: "/walkin",
+        templateUrl: "views/walkin/walkin.html",
+        controller: "WalkinCtrl"
+      })
       .state('app', {
         views: {
           '': {
@@ -71,19 +76,6 @@ angular.module('reg')
             return UserService.getCurrentUser();
           },
           settings: function(SettingsService){
-            return SettingsService.getPublicSettings();
-          }
-        }
-      })
-      .state('app.walkin', {
-        url: "/walkin",
-        templateUrl: "views/walkin/walkin.html",
-        controller: "WalkinCtrl",
-        resolve: {
-          currentUser: function(UserService) {
-            return UserService.getCurrentUser();
-          },
-          settings: function(SettingsService) {
             return SettingsService.getPublicSettings();
           }
         }

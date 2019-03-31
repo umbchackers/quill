@@ -4,42 +4,15 @@ angular.module('reg')
     '$rootScope',
     '$state',
     '$http',
-    'currentUser',
-    'settings',
     'Session',
     'UserService',
-    function($scope, $rootScope, $state, $http, currentUser, Settings, Session, UserService){
-      // Set up the user
-      $scope.user = currentUser.data;
-
-      // Convert stored birthdate to a format that Angular can understand
-      $scope.user.profile.birthdate = new Date(currentUser.data.profile.birthdate);
-
-      // Is the student from UMBC?
-      $scope.isUMBCStudent = $scope.user.email.split('@')[1] == 'umbc.edu';
-
-      // If so, default them to adult: true
-      if ($scope.isUMBCStudent){
-        $scope.user.profile.adult = true;
-      }
+    function($scope, $rootScope, $state, $http, Session, UserService){
 
       // Populate the school dropdown
       populateSchools();
       _setupForm();
 
       function populateSchools(){
-        $http
-          .get('/assets/schools.json')
-          .then(function(res){
-            var schools = res.data;
-            var email = $scope.user.email.split('@')[1];
-
-            if (schools[email]){
-              $scope.user.profile.school = schools[email].school;
-              $scope.autoFilledSchool = true;
-            }
-          });
-
         $http
           .get('/assets/schools.csv')
           .then(function(res){
@@ -66,7 +39,7 @@ angular.module('reg')
 
       function _updateUser(e){
         UserService
-          .updateWalkinApp(Session.getUserId(), $scope.user.profile, $scope.user.confirmation)
+          .updateWalkinApp($scope.user.profile, $scope.user.confirmation)
           .success(function(data){
             sweetAlert({
               title: "Awesome!",
@@ -79,6 +52,7 @@ angular.module('reg')
             });
           })
           .error(function(res){
+            console.log(res);
             sweetAlert("Uh oh!", "Something went wrong.", "error");
           });
       }

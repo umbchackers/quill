@@ -21,8 +21,7 @@
           <label> Email * </label>
           <input type="email"
                  name="email"
-                 disabled="disabled"
-                 ng-model="user.email">
+                 ng-model="user.profile.email">
         </div>
 
         <div class="field">
@@ -48,7 +47,6 @@
         <div class="field" ng-show="autoFilledSchool">
           <label> School * </label>
           <input class="ui input"
-                 disabled="disabled"
                  ng-show="autoFilledSchool"
                  ng-model="user.profile.school"
                  required>
