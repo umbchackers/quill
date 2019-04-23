@@ -337,7 +337,7 @@ UserController.updateWalkinApp = function(profile, confirmation, callback) {
       else {
         var email = profile.email;
         var nounList = ["apple", "hunter", "paper", "phone", "swim", "orange"];
-        var defaultPassword = "p3g5g5p4";
+        var defaultPassword = "hackumbc";
 
         canRegister(email, defaultPassword, function (err, valid) {
           if (err || !valid) {
