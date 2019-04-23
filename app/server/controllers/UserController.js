@@ -354,6 +354,7 @@ UserController.updateWalkinApp = function(profile, confirmation, callback) {
           u.confirmation = confirmation;
           u.lastUpdated = Date.now();
           u.verified = true;
+          u.needsPassChange = true;
 
           u.status.completedProfile = true;
           u.status.admitted = true;
@@ -651,6 +652,7 @@ UserController.changePassword = function(id, oldPassword, newPassword, callback)
           _id: id
         },{
           $set: {
+            needsPassChange: false,
             password: User.generateHash(newPassword)
           }
         }, {
@@ -708,6 +710,44 @@ UserController.resetPassword = function(token, password, callback){
         });
       });
   });
+};
+
+/**
+ * Change a user's password to a given password.
+ * @param  {String}   password    New Password
+ * @param  {Function} callback    args(err, user)
+ */
+UserController.newPassword = function (password, callback) {
+  if (!password || !token) {
+    return callback({
+      message: 'Bad arguments'
+    });
+  }
+
+  if (password.length < 6) {
+    return callback({
+      message: 'Password must be 6 or more characters.'
+    });
+  }
+
+  User
+    .findOneAndUpdate({
+      _id: id
+    }, 
+    {
+      $set: {
+        password: User.generateHash(password)
+      }
+    }, function (err, user) {
+        if (err || !user) {
+          return callback(err);
+        }
+
+        Mailer.sendPasswordChangedEmail(user.email);
+          return callback(null, {
+            message: 'Password successfully reset!'
+         });
+    });
 };
 
 /**

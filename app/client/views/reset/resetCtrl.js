@@ -2,9 +2,10 @@ angular.module('reg')
   .controller('ResetCtrl', [
     '$scope',
     '$stateParams',
+    'currentUser',
     '$state',
     'AuthService',
-    function($scope, $stateParams, $state, AuthService){
+    function($scope, $stateParams, currentUser, $state, AuthService){
       var token = $stateParams.token;
 
       $scope.loading = true;
@@ -19,23 +20,44 @@ angular.module('reg')
           return;
         }
 
-        AuthService.resetPassword(
-          token,
-          $scope.password,
-          function(message){
-            sweetAlert({
-              title: "Neato!",
-              text: "Your password has been changed!",
-              type: "success",
-              confirmButtonColor: "#e76482"
-            }, function(){
-              $state.go('login');
+        if (currentUser && currentUser.data.needsPassChange) {
+          AuthService.newPassword(
+            $scope.password,
+            function (message) {
+              sweetAlert({
+                title: "Neato!",
+                text: "Your password has been changed!",
+                type: "success",
+                confirmButtonColor: "#e76482"
+              }, function () {
+                $state.go('login');
+              });
+            },
+            function (data) {
+              $scope.error = data.message;
+              $scope.loading = false;
             });
-          },
-          function(data){
-            $scope.error = data.message;
-            $scope.loading = false;
-          });
+        }
+        else {
+          AuthService.resetPassword(
+            token,
+            $scope.password,
+            function (message) {
+              sweetAlert({
+                title: "Neato!",
+                text: "Your password has been changed!",
+                type: "success",
+                confirmButtonColor: "#e76482"
+              }, function () {
+                $state.go('login');
+              });
+            },
+            function (data) {
+              $scope.error = data.message;
+              $scope.loading = false;
+            });
+        }
+
       };
 
     }]);

@@ -153,6 +153,19 @@ angular.module('reg')
         templateUrl: "views/admin/settings/settings.html",
         controller: 'AdminSettingsCtrl',
       })
+      .state('new-pass', {
+        url: "/new-pass",
+        templateUrl: "views/reset/reset.html",
+        controller: 'ResetCtrl',
+        resolve: {
+          currentUser: function (UserService) {
+            return UserService.getCurrentUser();
+          }
+        },
+        data: {
+          requireLogin: false
+        }
+      })
       .state('reset', {
         url: "/reset/:token",
         templateUrl: "views/reset/reset.html",

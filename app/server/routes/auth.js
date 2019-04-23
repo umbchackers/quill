@@ -118,6 +118,24 @@ module.exports = function(router){
   });
 
   /**
+  * Change user's password.
+  * {
+  *   token: STRING
+  *   password: STRING,
+  * }
+  */
+  router.post('/new/password', function (req, res) {
+    var pass = req.body.password;
+
+    UserController.newPassword(pass, function (err, user) {
+      if (err || !user) {
+        return res.status(400).send(err);
+      }
+      return res.json(user);
+    });
+  });
+
+  /**
    * Resend a password verification email for this user.
    *
    * body {

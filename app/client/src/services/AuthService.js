@@ -103,6 +103,15 @@ angular.module('reg')
           });
       };
 
+      authService.newPassword = function (pass, onSuccess, onFailure) {
+        return $http
+          .post('/auth/reset/password', {
+            password: pass
+          })
+          .success(onSuccess)
+          .error(onFailure);
+      };
+
       authService.resetPassword = function(token, pass, onSuccess, onFailure){
         return $http
           .post('/auth/reset/password', {

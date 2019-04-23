@@ -233,6 +233,12 @@ var schema = new mongoose.Schema({
     default: false
   },
 
+  needsPassChange: {
+    type: Boolean,
+    required: true,
+    default: false
+  },
+
   salt: {
     type: Number,
     required: true,
