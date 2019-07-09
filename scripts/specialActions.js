@@ -15,13 +15,107 @@ UserController
     if (err) console.err(err);
 
     // signUpCSV();
+    // checkInCSV();
+    // umbcCheckInCSV();
     // customSearch("I am allergic to cats");
     // admitUsers();
     // getUnverified();
     // getUnsubmitted();
     // getAcceptedAndNotConfirmed();
     // getNonConfirmed();
-    getConfirmed();
+    // getConfirmed();
+    updateUniversityEmailRecord();
+
+    function updateUniversityEmailRecord() {
+      var myData = {};
+
+      for (var currentUser of user) {
+        var email = currentUser.email;
+        var extension = email.split("@")[1];
+        var school = currentUser.profile.school;
+
+        // If the school is a valid institution
+        if (school != undefined && extension.includes(".edu") 
+            && (school.includes("College") || school.includes("University")))
+          myData[extension] = school;
+      }
+
+      console.log(myData);
+    }
+
+    function umbcCheckInCSV() {
+      var myData = [];
+
+      for (var i = 0; i < user.length; i++) {
+        var item = {};
+        var currentUser = user[i];
+
+        if (currentUser.status.checkedIn && currentUser.email.includes("@umbc.edu")) {
+          var name = currentUser.profile.name;
+
+          item['first_name'] = name.split(" ")[0];
+          
+          if (name.split("").length > 1)
+            item['last_name'] = name.split(" ")[1];
+          else
+            item['last_name'] = '';
+  
+          item['email'] = currentUser.email;
+  
+          myData.push(item);
+        }
+      }
+
+      var Json2csvParser = require('json2csv').Parser;
+      var fields = ['first_name', 'last_name', 'email'];
+
+      var json2csvParser = new Json2csvParser({ 'fields': fields });
+      var csv = json2csvParser.parse(myData);
+
+      fs.writeFile('umbccheckins.csv', csv, function (err) {
+        if (err) console.log(err);
+
+        console.log('umbccheckins.csv written successfully.');
+      });
+    }
+
+    function checkInCSV() {
+      var myData = [];
+
+      for (var i = 0; i < user.length; i++) {
+        var item = {};
+        var currentUser = user[i];
+
+        if (currentUser.status.checkedIn) {
+          var name = currentUser.profile.name;
+
+          item['first_name'] = name.split(" ")[0];
+          
+          if (name.split("").length > 1)
+            item['last_name'] = name.split(" ")[1];
+          else
+            item['last_name'] = '';
+  
+          item['email'] = currentUser.email;
+          item['phone_number'] = currentUser.profile.phoneNumber + "";
+          item['school'] = currentUser.profile.school;
+  
+          myData.push(item);
+        }
+      }
+
+      var Json2csvParser = require('json2csv').Parser;
+      var fields = ['first_name', 'last_name', 'email', 'phone_number', 'school'];
+
+      var json2csvParser = new Json2csvParser({ 'fields': fields });
+      var csv = json2csvParser.parse(myData);
+
+      fs.writeFile('checkins.csv', csv, function (err) {
+        if (err) console.log(err);
+
+        console.log('checkins.csv written successfully.');
+      });
+    }
 
     function signUpCSV() {
       var myData = [];

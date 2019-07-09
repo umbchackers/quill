@@ -40,6 +40,13 @@ angular.module('reg')
         });
       },
 
+      updateWalkinApp: function(profile, confirmation) {
+        return $http.put(base + 'walkin', {
+          profile: profile,
+          confirmation: confirmation
+        });
+      },
+
       updateConfirmation: function(id, confirmation){
         return $http.put(base + id + '/confirm', {
           confirmation: confirmation

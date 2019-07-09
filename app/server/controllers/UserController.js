@@ -315,6 +315,72 @@ UserController.updateProfileById = function (id, profile, callback){
   });
 };
 
+UserController.updateWalkinApp = function(profile, confirmation, callback) {
+    // Check if its within the registration window.
+    Settings.getRegistrationTimes(function (err, times) {
+      if (err) {
+        callback(err);
+      }
+
+      var now = Date.now();
+
+      if (now < times.timeOpen) {
+        return callback({
+          message: "Registration opens in " + moment(times.timeOpen).fromNow() + "!"
+        });
+      }
+      // else if (now < times.timeClose){
+      //   return callback({
+      //     message: "Sorry, walkin applications are ."
+      //   });
+      // }
+      else {
+        var email = profile.email;
+        var nounList = ["apple", "hunter", "paper", "phone", "swim", "orange"];
+        var defaultPassword = "hackumbc";
+
+        canRegister(email, defaultPassword, function (err, valid) {
+          if (err || !valid) {
+            return callback(err);
+          }
+
+          var u = new User();
+          u.email = email;
+          u.password = User.generateHash(defaultPassword);
+          // u.password = User.generateHash(nounList[Math.floor(Math.random() * nounList.length)] 
+          //                                + Math.ceil(Math.random() * 30));
+
+          u.profile = profile;
+          u.confirmation = confirmation;
+          u.lastUpdated = Date.now();
+          u.verified = true;
+          u.needsPassChange = true;
+
+          u.status.completedProfile = true;
+          u.status.admitted = true;
+          u.status.confirmed = true;
+          u.status.checkedIn = true;
+
+          u.save(function(err) {
+            if (err) {
+              // Duplicate key error codes
+              if (err.name === 'MongoError' && (err.code === 11000 || err.code === 11001)) {
+                return callback({
+                  message: 'An account for this email already exists.'
+                });
+              }
+
+              return callback(err);
+            }
+            else {
+              return callback(null, { user: u});
+            }
+          });
+        });
+      }
+    });
+};
+
 /**
  * Update a user's confirmation object, given an id and a confirmation.
  *
@@ -414,6 +480,19 @@ UserController.verifyByToken = function(token, callback){
     },
     callback);
   });
+};
+
+UserController.manuallyVerify = function(email, callback){
+  User.findOneAndUpdate({
+    email: email.toLowerCase()
+  },{
+    $set: {
+      'verified': true
+    }
+  }, {
+    new: true
+  },
+  callback);
 };
 
 /**
@@ -573,6 +652,7 @@ UserController.changePassword = function(id, oldPassword, newPassword, callback)
           _id: id
         },{
           $set: {
+            needsPassChange: false,
             password: User.generateHash(newPassword)
           }
         }, {
@@ -630,6 +710,44 @@ UserController.resetPassword = function(token, password, callback){
         });
       });
   });
+};
+
+/**
+ * Change a user's password to a given password.
+ * @param  {String}   password    New Password
+ * @param  {Function} callback    args(err, user)
+ */
+UserController.newPassword = function (password, callback) {
+  if (!password || !token) {
+    return callback({
+      message: 'Bad arguments'
+    });
+  }
+
+  if (password.length < 6) {
+    return callback({
+      message: 'Password must be 6 or more characters.'
+    });
+  }
+
+  User
+    .findOneAndUpdate({
+      _id: id
+    }, 
+    {
+      $set: {
+        password: User.generateHash(password)
+      }
+    }, function (err, user) {
+        if (err || !user) {
+          return callback(err);
+        }
+
+        Mailer.sendPasswordChangedEmail(user.email);
+          return callback(null, {
+            message: 'Password successfully reset!'
+         });
+    });
 };
 
 /**

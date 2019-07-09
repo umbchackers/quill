@@ -17,6 +17,9 @@ angular.module('reg')
       $scope.timeClose = Utils.formatTime(Settings.timeClose);
       $scope.timeConfirm = Utils.formatTime(Settings.timeConfirm);
 
+      if (currentUser.data.needsPassChange) 
+        window.location.replace(window.location.href + "new-pass");
+
       $scope.DASHBOARD = DASHBOARD;
 
       for (var msg in $scope.DASHBOARD) {
