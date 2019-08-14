@@ -39,7 +39,7 @@
         "watch": "gulp server",
         "prod": "gulp build && node app.js",
         "config": "cp .env.config .env",
-        "test": "mocha app/server/tests/*.js --timeout 10000",
+        "test": "mocha app/server/tests/*.js --timeout 10000 --exit",
         "postinstall": "bower install && gulp build"
     },
     "devDependencies": {

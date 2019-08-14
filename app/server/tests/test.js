@@ -1,41 +1,15 @@
 process.env.NODE_ENV = "test";
+// Get server instance for testing
+var server = require("../../../app");
 
-let chai = require("chai");
-let chaiHttp = require("chai-http");
+//------------//
+// Unit Tests //
+//------------//
+let runUserUnitTest = require("./unit-tests/user-test");
 
-var server = require("../../../app.js");
-let User = require("../models/User");
+runUserUnitTest(server);
 
-// Configuring Chai
-chai.use(chaiHttp);
-chai.should();
-
-describe("Users", () => {
-    beforeEach((done) => {
-        // Remove all users before each test
-        User.remove({}, (error) => {
-            done();
-        });
-    });
-    // Test adding a user
-    describe("/POST user", () => {
-        it("Should create a new user", (done) => {
-            let user = {
-                email: "user@email.edu",
-                password: "Example2@"
-            };
-            chai.request(server)
-                .post("/auth/register")
-                .send(user)
-                .end((err, res) => {
-                    res.should.have.status(200);
-                    res.body.user.email.should.equal(user.email);
-                    done();
-                });
-        });
-    });
+after((done) => {
+    server.close();
+    done();
 });
-
-// after(() => {
-//     server.close();
-// });
