@@ -17,6 +17,7 @@ var EMAIL_HOST = process.env.EMAIL_HOST;
 var EMAIL_USER = process.env.EMAIL_USER;
 var EMAIL_PASS = process.env.EMAIL_PASS;
 var EMAIL_PORT = process.env.EMAIL_PORT;
+var EMAIL_SECURE = process.env.EMAIL_SECURE;
 var EMAIL_CONTACT = process.env.EMAIL_CONTACT;
 var EMAIL_HEADER_IMAGE = process.env.EMAIL_HEADER_IMAGE;
 if(EMAIL_HEADER_IMAGE.indexOf("https") == -1){
@@ -28,7 +29,7 @@ var NODE_ENV = process.env.NODE_ENV;
 var options = {
   host: EMAIL_HOST,
   port: EMAIL_PORT,
-  secure: true,
+  secure: EMAIL_SECURE,
   auth: {
     user: EMAIL_USER,
     pass: EMAIL_PASS
