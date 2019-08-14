@@ -48,10 +48,9 @@ app.use("/auth", authRouter);
 
 require("./app/server/routes")(app);
 
-
 // listen (start app with node server.js) ======================================
-app.listen(port, () => {
+var server = app.listen(port, () => {
     console.log("App listening on port " + port);
 });
 // Used to access the express server for testing
-module.export = app;
+module.exports = server;

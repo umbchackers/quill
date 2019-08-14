@@ -3,18 +3,12 @@ process.env.NODE_ENV = "test";
 let chai = require("chai");
 let chaiHttp = require("chai-http");
 
-let app = require("../../../app").app;
-let startup = require("../../../app").startup;
+var server = require("../../../app.js");
 let User = require("../models/User");
 
 // Configuring Chai
 chai.use(chaiHttp);
 chai.should();
-before((done) => {
-    startup.on("complete", function() {
-        done();
-    });
-});
 
 describe("Users", () => {
     beforeEach((done) => {
@@ -25,18 +19,23 @@ describe("Users", () => {
     });
     // Test adding a user
     describe("/POST user", () => {
-        it("Should POST a new user to be created", (done) => {
+        it("Should create a new user", (done) => {
             let user = {
                 email: "user@email.edu",
                 password: "Example2@"
             };
-            chai.request(app)
+            chai.request(server)
                 .post("/auth/register")
                 .send(user)
                 .end((err, res) => {
                     res.should.have.status(200);
+                    res.body.user.email.should.equal(user.email);
                     done();
                 });
         });
     });
 });
+
+// after(() => {
+//     server.close();
+// });
