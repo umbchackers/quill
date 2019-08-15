@@ -1,5 +1,5 @@
-// Load the dotfiles.
-require("dotenv").load({ silent: true });
+// Load the dotfiles unless testing.
+if (process.env.NODE_ENV != "test") require("dotenv").load({ silent: true });
 
 var express = require("express");
 
