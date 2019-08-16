@@ -10,10 +10,10 @@ process.env.EMAIL_SECURE = process.env.TEST_EMAIL_SECURE;
 // Initalize server instance for testing
 var server = require("../../../app");
 
-let runUserUnitTest = require("./unit-tests/auth-test");
+let runAuthUnitTest = require("./units/auth-test");
 
 //------------//
 // Unit Tests //
 //------------//
 
-runUserUnitTest(server);
+runAuthUnitTest(server);
