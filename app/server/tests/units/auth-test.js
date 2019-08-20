@@ -78,6 +78,22 @@ let runTest = (server, smtpService) => {
                 });
             });
         });
+        describe("(GET) - /auth/verify/:token", () => {
+            it("Should verify the user", (done) => {
+                User.findOne({ email: user.email }, (err, query) => {
+                    if (err) return done(err);
+                    let token = query.generateEmailVerificationToken();
+                    chai.request(server)
+                        .get("/auth/verify/" + token)
+                        .end((err, res) => {
+                            if (err) return done(err);
+                            res.should.have.status(200);
+                            res.body.verified.should.be.true;
+                            done();
+                        });
+                });
+            });
+        });
         after((done) => {
             // Remove user created for auth testing
             User.remove({ email: user.email }, (error) => {
