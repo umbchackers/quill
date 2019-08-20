@@ -31,8 +31,8 @@ const getAllEmailIdWithRecipient = (recipient) => {
     return new Promise((resolve, reject) => {
         let count = 0,
             ids = [];
+        // This interval accounts for the latency of the email processing
         let intervalId = setInterval(() => {
-            // console.log("Interval");
             smtpServer.getAllEmail((err, emails) => {
                 if (emails)
                     emails.forEach((email) => {
@@ -40,7 +40,6 @@ const getAllEmailIdWithRecipient = (recipient) => {
                         if (recipients.some((to) => to.address === recipient))
                             ids.push(email.id);
                     });
-                // else console.log("SMTP Server returned 0 emails");
             });
             if (ids.length > 0) {
                 clearInterval(intervalId);
@@ -82,6 +81,29 @@ const getEmailWithId = (id) => {
     );
 };
 /**
+ * Get the email object with a given recipient. Composite function that uses other exposed functions
+ * @param {string} recipient - The to address of the email to return.
+ */
+const getFirstEmailWithRecipient = (recipient) => {
+    return getFirstEmailIdWithRecipient(recipient).then((id) =>
+        getEmailWithId(id)
+    );
+};
+/**
+ * Get the email object with a given recipient and delete after returning. Composite function that uses other exposed functions
+ * @param {string} recipient - The to address of the email to return.
+ */
+const getAndDeleteFirstEmailWithRecipient = (recipient) => {
+    return getFirstEmailIdWithRecipient(recipient).then((id) => {
+        return new Promise((resolve, reject) => {
+            getEmailWithId(id).then((email) => {
+                smtpServer.deleteEmail(email.id, (err) => reject(err));
+                return resolve(email);
+            });
+        });
+    });
+};
+/**
  * Provides external access to close the server.
  */
 const closeServer = () => {
@@ -92,6 +114,8 @@ const smtpService = {
     getAllEmailIdWithRecipient,
     getFirstEmailIdWithRecipient,
     getEmailWithId,
+    getFirstEmailWithRecipient,
+    getAndDeleteFirstEmailWithRecipient,
     closeServer
 };
 

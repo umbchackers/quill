@@ -5,15 +5,6 @@ let User = require("../../models/User");
 // Test Configuration
 let verificationEmailRegex = new RegExp(process.env.ROOT_URL + "/verify/.*\\s");
 
-function findObjectByKey(array, key, value) {
-    for (var i = 0; i < array.length; i++) {
-        if (array[i][key] === value) {
-            return array[i];
-        }
-    }
-    return null;
-}
-
 // Configuring Chai
 chai.use(chaiHttp);
 chai.should();
@@ -34,82 +25,65 @@ let runTest = (server, smtpService) => {
                     .post("/auth/register")
                     .send(user)
                     .end((err, res) => {
+                        if (err) return done(err);
                         res.should.have.status(200);
+                        // Check the return value of the call
                         res.body.user.email.should.equal(user.email);
-                        done();
-                    });
-                // Validate that the verification email was sent correctly
-                describe("User verification email", () => {
-                    it("Should have the correct account information and valid verification link", (done) => {
-                        // Get the verification email id for the new user
+                        // Validate that the verification email was sent correctly
                         smtpService
-                            .getFirstEmailIdWithRecipient(user.email)
-                            .then((id) => {
-                                console.log(id);
+                            .getAndDeleteFirstEmailWithRecipient(user.email)
+                            .then((email) => {
+                                console.log(email.id);
+                                verificationLink = email.text.match(
+                                    verificationEmailRegex
+                                );
+                                console.log(JSON.stringify(verificationLink));
+                                verificationLink.should.be.a("string");
                                 done();
                             })
                             .catch((err) => {
                                 done(err);
                             });
                     });
-                });
-                // Get the verification link
-                // chai.request(testMailServerDomain)
-                //     .get(
-                //         "/api/v1/inboxes/" +
-                //             inboxId +
-                //             "/messages/" +
-                //             emailID +
-                //             "/body.txt"
-                //     )
-                //     .set("Api-Token", api_token)
-                //     .end((err, res) => {
-                //         res.should.have.status(200);
-                //         res.text.should.be.a("string");
-                //         verificationLink = res.text.match(
-                //             verificationEmailRegex
-                //         )[0];
-                //         verificationLink.should.be.a("string");
-                //         done();
-                //     });
-
-                // after((done) => {
-                //     // Delete the test verification email
-                //     chai.request(testMailServerDomain)
-                //         .delete(
-                //             "/api/v1/inboxes/" +
-                //                 inboxId +
-                //                 "/messages/" +
-                //                 emailID
-                //         )
-                //         .set("Api-Token", api_token)
-                //         .end((err, res) => {
-                //             res.should.have.status(200);
-                //             done();
-                //         });
-                // });
             });
         });
-        // describe("(POST) - /auth/verify/resend", () => {
-        //     it("Should re-send verification email", (done) => {
-        //         User.findOne({ email: user.email }, "id", (err, query) => {
-        //             chai.request(server)
-        //                 .post("/auth/verify/resend")
-        //                 .send({ id: query.id })
-        //                 .end((err, res) => {
-        //                     res.should.have.status(200);
-        //                     // console.log(res.status);
-        //                     done();
-        //                 });
-        //         });
-        //     });
-        // });
-        // after((done) => {
-        //     // Remove user created for auth testing
-        //     User.remove({ email: user.email }, (error) => {
-        //         done();
-        //     });
-        // });
+        describe("(POST) - /auth/verify/resend", () => {
+            it("Should re-send verification email", (done) => {
+                User.findOne({ email: user.email }, "id", (err, query) => {
+                    if (err) return done(err);
+                    chai.request(server)
+                        .post("/auth/verify/resend")
+                        .send({ id: query.id })
+                        .end((err, res) => {
+                            if (err) return done(err);
+                            res.should.have.status(200);
+                            // Validate that the verification email was sent correctly
+                            smtpService
+                                .getAndDeleteFirstEmailWithRecipient(user.email)
+                                .then((email) => {
+                                    console.log(email.id);
+                                    verificationLink = email.text.match(
+                                        verificationEmailRegex
+                                    );
+                                    console.log(
+                                        JSON.stringify(verificationLink)
+                                    );
+                                    verificationLink.should.be.a("string");
+                                    done();
+                                })
+                                .catch((err) => {
+                                    done(err);
+                                });
+                        });
+                });
+            });
+        });
+        after((done) => {
+            // Remove user created for auth testing
+            User.remove({ email: user.email }, (error) => {
+                done();
+            });
+        });
     });
 };
 

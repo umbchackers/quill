@@ -28,7 +28,6 @@ if(EMAIL_HEADER_IMAGE.indexOf("https") == -1){
 var NODE_ENV = process.env.NODE_ENV;
 
 const auth = (NODE_ENV === "test") ? null : {user: EMAIL_USER, pass: EMAIL_PASS};
-console.log(IGNORE_TLS);
 
 var options = {
   host: EMAIL_HOST,
