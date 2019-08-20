@@ -18,6 +18,7 @@ var EMAIL_USER = process.env.EMAIL_USER;
 var EMAIL_PASS = process.env.EMAIL_PASS;
 var EMAIL_PORT = process.env.EMAIL_PORT;
 var EMAIL_SECURE = process.env.EMAIL_SECURE === "true";
+var IGNORE_TLS = process.env.EMAIL_IGNORE_TLS === "true";
 var EMAIL_CONTACT = process.env.EMAIL_CONTACT;
 var EMAIL_HEADER_IMAGE = process.env.EMAIL_HEADER_IMAGE;
 if(EMAIL_HEADER_IMAGE.indexOf("https") == -1){
@@ -26,14 +27,15 @@ if(EMAIL_HEADER_IMAGE.indexOf("https") == -1){
 
 var NODE_ENV = process.env.NODE_ENV;
 
+const auth = (NODE_ENV === "test") ? null : {user: EMAIL_USER, pass: EMAIL_PASS};
+console.log(IGNORE_TLS);
+
 var options = {
   host: EMAIL_HOST,
   port: EMAIL_PORT,
   secure: EMAIL_SECURE,
-  auth: {
-    user: EMAIL_USER,
-    pass: EMAIL_PASS
-  }
+  ignoreTLS: IGNORE_TLS,
+  auth: auth
 };
 
 var transporter = nodemailer.createTransport(smtpTransport(options));
