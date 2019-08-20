@@ -94,6 +94,48 @@ let runTest = (server, smtpService) => {
                 });
             });
         });
+        describe("(POST) - /auth/login [With email and password]", () => {
+            it("Should login the user", (done) => {
+                User.findOne({ email: user.email }, (err, query) => {
+                    let token;
+                    if (err) return done(err);
+                    chai.request(server)
+                        .post("/auth/login/")
+                        .send({ email: user.email, password: user.password })
+                        .end((err, res) => {
+                            if (err) return done(err);
+                            res.should.have.status(200);
+                            res.body.token.should.be.a("string");
+                            token = res.body.token;
+                        });
+                    // login with invalid token (expected to fail)
+                    chai.request(server)
+                        .post("/auth/login/")
+                        .send({
+                            email: user.email,
+                            password: user.password,
+                            token: "Invalid_Token_Value"
+                        })
+                        .end((err, res) => {
+                            if (err) return done(err);
+                            res.should.have.status(400);
+                        });
+                    // login with valid token
+                    chai.request(server)
+                        .post("/auth/login/")
+                        .send({
+                            email: user.email,
+                            password: user.password,
+                            token: token
+                        })
+                        .end((err, res) => {
+                            if (err) return done(err);
+                            res.should.have.status(200);
+                            done();
+                        });
+                });
+            });
+        });
         after((done) => {
             // Remove user created for auth testing
             User.remove({ email: user.email }, (error) => {
