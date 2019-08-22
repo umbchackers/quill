@@ -4,6 +4,7 @@ let User = require("../../models/User");
 
 // Test Configuration
 let verificationEmailRegex = new RegExp(process.env.ROOT_URL + "/verify/.*\\s");
+let passwordResetEmailRegex = new RegExp(process.env.ROOT_URL + "/verify/.*\\s");
 
 // Configuring Chai
 chai.use(chaiHttp);
@@ -33,7 +34,6 @@ let runTest = (server, smtpService) => {
                         smtpService
                             .getAndDeleteFirstEmailWithRecipient(user.email)
                             .then((email) => {
-                                console.log(email.id);
                                 verificationLink = email.text.match(
                                     verificationEmailRegex
                                 );
@@ -61,7 +61,6 @@ let runTest = (server, smtpService) => {
                             smtpService
                                 .getAndDeleteFirstEmailWithRecipient(user.email)
                                 .then((email) => {
-                                    console.log(email.id);
                                     verificationLink = email.text.match(
                                         verificationEmailRegex
                                     );
@@ -134,6 +133,31 @@ let runTest = (server, smtpService) => {
                             done();
                         });
                 });
+            });
+        });
+        describe("(POST) - /reset", () => {
+            it("Should send a password reset email to the users email", (done) => {
+                chai.request(server)
+                    .get("/reset")
+                    .send({ email: user.email })
+                    .end((err, res) => {
+                        if (err) return done(err);
+                        res.should.have.status(200);
+                        // Validate that the verification email was sent correctly
+                        smtpService
+                            .getAndDeleteFirstEmailWithRecipient(user.email)
+                            .then((email) => {
+                                verificationLink = email.text.match(
+                                    verificationEmailRegex
+                                );
+                                console.log(JSON.stringify(verificationLink));
+                                verificationLink.should.be.a("string");
+                                done();
+                            })
+                            .catch((err) => {
+                                done(err);
+                            });
+                    });
             });
         });
         after((done) => {
