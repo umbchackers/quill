@@ -6,10 +6,10 @@ mongoose.connect(database);
 var UserController = require("../app/server/controllers/UserController");
 let User = require("../app/server/models/User");
 
-let users = 10;
+let users = 200;
 let username = "hacker";
 let i = 0;
-let interval = 60000;
+let interval = 1;
 User.remove({ admin: false }, (err) => {
     err && console.log(err);
     // process.exit(0);
@@ -32,11 +32,11 @@ let id = setInterval(() => {
 const verifyNewUser = (email) => {
     User.findOneAndUpdate(
         { email: email },
-        { $set: { verified: true } },
+        { $set: { verified: true, "status.completedProfile": true } },
         (err, user) => {
             if (err || !user) {
                 console.log("Error verifying user: " + email);
-                process.exit(1);
+                // process.exit(1);
             }
             console.log(email + " created and verified.");
             if (email.includes(users - 1)) process.exit(0);

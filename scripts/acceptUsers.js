@@ -13,7 +13,12 @@ var editingUser = { email: process.env.ADMIN_EMAIL };
 // var userArray = require('fs').readFileSync('accepted.txt').toString().split('\n');
 
 User.find(
-    { admin: false, verified: true, "status.admitted": false },
+    {
+        admin: false,
+        verified: true,
+        "status.admitted": false,
+        "status.completedProfile": true
+    },
     (err, users) => {
         if (err) return;
         users.forEach((user, index) => {
@@ -32,7 +37,7 @@ User.find(
                                     user.email +
                                         " acceptance status was revoked"
                                 );
-                                if (index >= users.length - 1) process.exit(0);
+                                process.exit(0);
                             }
                         );
                     } else {
