@@ -27,11 +27,11 @@ angular.module('reg')
         }
       })
       //ToDo(#21): Enable endpoint when Hackathon begins.
-      // .state('walkin', {
-      //   url: "/walkin",
-      //   templateUrl: "views/walkin/walkin.html",
-      //   controller: "WalkinCtrl"
-      // })
+      .state('walkin', {
+        url: "/walkin",
+        templateUrl: "views/walkin/walkin.html",
+        controller: "WalkinCtrl"
+      })
       .state('app', {
         views: {
           '': {
