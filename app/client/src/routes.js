@@ -30,7 +30,10 @@ angular.module('reg')
       .state('walkin', {
         url: "/walkin",
         templateUrl: "views/walkin/walkin.html",
-        controller: "WalkinCtrl"
+        controller: "WalkinCtrl",
+        data: {
+          requireLogin: false
+        }
       })
       .state('app', {
         views: {
