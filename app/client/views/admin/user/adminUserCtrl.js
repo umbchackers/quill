@@ -4,11 +4,24 @@ angular.module('reg')
     '$http',
     'user',
     'UserService',
-    function($scope, $http, User, UserService){
+    '$location',
+    function($scope, $http, User, UserService, $location){
       $scope.selectedUser = User.data;
 
       // Populate the school dropdown
       populateSchools();
+
+      if ($location.search().checkin) {
+        console.log("Auto Checkin");
+
+        if (!$scope.selectedUser.status.checkIn) {
+          UserService
+          .checkIn($scope.selectedUser._id)
+          .success(function(user){
+            swal("Accepted", $scope.selectedUser.profile.name + ' has been checked in.', "success");
+          });
+        }
+      }
 
       /**
        * TODO: JANK WARNING

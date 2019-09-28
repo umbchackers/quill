@@ -42,7 +42,7 @@ angular.module('reg')
 
       // Create checkin URL for user
       angular.element(document).ready(function () {
-        var url = "http://register.hackumbc.org/admin/users/" + user._id;
+        var url = "http://register.hackumbc.org/admin/users/" + user._id + "?checkin=true";
         
         var typeNumber = 4;
         var errorCorrectionLevel = 'L';
