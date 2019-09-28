@@ -171,6 +171,11 @@ angular.module('reg')
         url: "/reset/:token",
         templateUrl: "views/reset/reset.html",
         controller: 'ResetCtrl',
+        resolve: {
+          currentUser: function (UserService) {
+            return null;
+          }
+        },
         data: {
           requireLogin: false
         }
