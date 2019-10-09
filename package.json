@@ -30,17 +30,10 @@
     "watch": "gulp server",
     "prod": "gulp build && node app.js",
     "config": "cp .env.config .env",
-    "postinstall": "bower install && gulp build"
+    "postinstall": ""
   },
   "devDependencies": {
     "dotenv": "^8.1.0",
-    "gulp": "^4.0.2",
-    "gulp-concat": "^2.6.0",
-    "gulp-ng-annotate": "^2.1.0",
-    "gulp-nodemon": "^2.0.3",
-    "gulp-sass": "^2.0.1",
-    "gulp-sourcemaps": "^2.6.5",
-    "gulp-uglify": "^3.0.2",
     "nodemon": "^1.2.1"
   },
   "main": "app.js",
